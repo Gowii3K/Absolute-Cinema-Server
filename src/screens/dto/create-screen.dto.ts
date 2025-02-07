@@ -1,6 +1,15 @@
-import { IsInt } from "class-validator";
+import { IsDateString, IsInt, Max, Min } from "class-validator";
 
 export class CreateScreenDto{
     @IsInt()
-    userId:number;
+    venueId:number;
+    @IsInt()
+    @Min(0)
+    @Max(2359)
+    openingTime:number
+
+    @IsInt()
+    @Min(0)
+    @Max(2359)
+    closingTime:number
 }

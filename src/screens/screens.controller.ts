@@ -12,9 +12,9 @@ export class ScreensController {
         return this.screensService.getScreens(parseInt(id,10));
     }
 
-    @Post(':id')
-    createScreen(@Param('id') id:string,@Body()payload:CreateScreenDto){
-        return this.screensService.createScreen(parseInt(id,10),payload);
+    @Post()
+    createScreen(@Body()payload:CreateScreenDto){
+        return this.screensService.createScreen(payload);
     }
 
     @Put(':screenId')

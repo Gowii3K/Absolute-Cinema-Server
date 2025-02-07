@@ -13,8 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  userId Int @id @default(autoincrement())
+model Venue{
+  venueId Int @id @default(autoincrement())
   firstName String
   lastName String
   email String @unique
@@ -25,7 +25,20 @@ model User{
 
 model Screen{
   screenId Int @id @default(autoincrement())
-  userId Int 
-  user User @relation(fields: [userId],references: [userId])
+  venueId Int 
+  openingTime Int
+  closingTime Int
+  bookings Booking[]
+  venue Venue @relation(fields: [venueId],references: [venueId])
   
 }
+model Booking{
+  bookingId Int @id @default(autoincrement())
+  screenId Int
+  date String
+  slot Int
+  screen Screen @relation(fields: [screenId],references: [screenId])
+  @@unique([date,slot])
+}
+
+

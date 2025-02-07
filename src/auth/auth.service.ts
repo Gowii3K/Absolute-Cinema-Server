@@ -1,16 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { VenuesService } from 'src/venues/venues.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(private venuesService: VenuesService) {}
 
   async validateLogin(email:string,password:string) {
-    const user = await this.usersService.findUserByEmail(email);
+    const user = await this.venuesService.findUserByEmail(email);
     const authorized = await bcrypt.compare(password, user.password);
     if (!authorized) {
       throw new UnauthorizedException('Wrong password');
-    } else return user.userId;
+    } else return user.venueId;
   }
 }

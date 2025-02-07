@@ -9,10 +9,11 @@ export class ScreensService {
 
   async getScreens(id: number) {
     return await this.prismaService.screen.findMany({
-      where: { userId: id },
+      where: { venueId: id },
     });
   }
-  async createScreen(id: number, payload: CreateScreenDto) {
+  async createScreen( payload: CreateScreenDto) {
+    
     return await this.prismaService.screen.create({
       data: payload,
     });
