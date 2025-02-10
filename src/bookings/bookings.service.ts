@@ -1,35 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking-dto';
+import { Slot } from './interface/slots';
 
 @Injectable()
 export class BookingsService {
-    constructor(private prismaService:PrismaService){}
+  constructor(private prismaService: PrismaService) {}
+  
+  async getBookings(id: number, date: string) {
+    const time = await this.prismaService.screen.findFirst({
+      where: { screenId: id },
+      select: { openingTime: true, closingTime: true },
+    });
 
-    async getBookings(id:number,date:string){
-        const time=await this.prismaService.screen.findFirst({
-            where:{screenId:id},
-            select:{openingTime:true,closingTime:true}
-        })
-        console.log(time);
-        if(time){
-            const numSlots=time?.closingTime-time?.openingTime;
-            console.log(numSlots/60);
-            const slots={};
-            for(let i=0;i<numSlots/60;i++){
+    const booked = await this.prismaService.booking.findMany({
+      where: { screenId: id, date: date },
+      select: { slot: true },
+    });
 
+    if (time) {
+      const { openingTime, closingTime } = time;
+      const bookedArr = new Set(booked.map((booking) => booking.slot));
+      let openingHour = Math.floor(openingTime / 100);
+      let openingMintue = openingTime % 100;
+      const slots = Math.floor((closingTime - openingTime) / 100);
+      const slotsArray: Slot[] = [];
 
-            }
-        }
-        
-        return this.prismaService.booking.findMany({
-            where:{screenId:id,date:date}
-        })
-        
+      for (let i = 0; i < slots; i++) {
+        slotsArray.push({
+          starts: `${openingHour}.${openingMintue}`,
+          ends: `${openingHour + 1}.${openingMintue}`,
+          slot: i,
+          isBooked: bookedArr.has(i),
+        });
+
+        openingHour += 1;
+      }
+      return slotsArray;
     }
-    async createBooking(payload:CreateBookingDto){
-        return this.prismaService.booking.create({
-            data:payload
-        })
-    }
+  }
+  async createBooking(payload: CreateBookingDto) {
+    return this.prismaService.booking.create({
+      data: payload,
+    });
+  }
 }

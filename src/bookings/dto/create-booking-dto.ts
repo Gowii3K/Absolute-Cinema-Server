@@ -8,5 +8,4 @@ export class CreateBookingDto{
     @IsInt()
     screenId:number
 
-
 }
