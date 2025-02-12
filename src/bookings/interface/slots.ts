@@ -1,7 +1,5 @@
 export interface Slot{
-    starts:string;
-    ends:string;
-    slot:number;
+    seatNo:number;
     isBooked:boolean;
 
 }

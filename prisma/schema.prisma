@@ -15,8 +15,7 @@ datasource db {
 
 model Venue{
   venueId Int @id @default(autoincrement())
-  firstName String
-  lastName String
+  name String
   email String @unique
   createdAt DateTime @default(now())
   password String
@@ -25,9 +24,8 @@ model Venue{
 
 model Screen{
   screenId Int @id @default(autoincrement())
-  venueId Int 
-  openingTime Int
-  closingTime Int
+  venueId Int
+  seats Int 
   bookings Booking[]
   venue Venue @relation(fields: [venueId],references: [venueId])
   
@@ -36,9 +34,9 @@ model Booking{
   bookingId Int @id @default(autoincrement())
   screenId Int
   date String
-  slot Int
+  seatNo Int
   screen Screen @relation(fields: [screenId],references: [screenId])
-  @@unique([date,slot])
+  @@unique([date,seatNo])
 }
 
 
