@@ -7,21 +7,21 @@ import { Slot } from './interface/slots';
 export class BookingsService {
   constructor(private prismaService: PrismaService) {}
 
-  async getBookings(id: number, date: string) {
+  async getBookings(id: number) {
     //find opening and closing time of screen
-    const time = await this.prismaService.screen.findFirst({
-      where: { screenId: id },
-      select: { seats: true },
+    const time = await this.prismaService.show.findFirst({
+      where: { showId: id },
+      include:{screen:true}
     });
 
     //find existing books for the date
     const booked = await this.prismaService.booking.findMany({
-      where: { screenId: id, date: date },
+      where: { showId: id},
       select: { seatNo: true },
     });
 
     if (time) {
-      const { seats } = time;
+      const { seats } = time.screen;
       const bookedArr = new Set(booked.map((booking) => booking.seatNo));
 
       const slotsArray: Slot[] = [];

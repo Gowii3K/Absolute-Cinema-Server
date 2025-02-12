@@ -6,10 +6,10 @@ import { CreateBookingDto } from './dto/create-booking-dto';
 @Controller('bookings')
 export class BookingsController {
     constructor(private bookingsService:BookingsService){}
-    @Get(':id/:date')
-    getBookings(@Param()params:GetBookingsDto){
-        const {id, date}=params;
-        return this.bookingsService.getBookings(id,date);
+    @Get(':id')
+    getBookings(@Param('id')id:string){
+        
+        return this.bookingsService.getBookings(parseInt(id,10));
     }
 
     @Post()

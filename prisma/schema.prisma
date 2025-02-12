@@ -26,17 +26,28 @@ model Screen{
   screenId Int @id @default(autoincrement())
   venueId Int
   seats Int 
-  bookings Booking[]
+  show Show[]
   venue Venue @relation(fields: [venueId],references: [venueId])
+}
+
+model Show{
+
+  showId Int @id @default(autoincrement())
+  screenId Int
+  date String
+  time String
+  bookings Booking[]
+  screen Screen @relation(fields: [screenId],references: [screenId])
+  @@unique([date,time,screenId])
+
   
 }
 model Booking{
   bookingId Int @id @default(autoincrement())
-  screenId Int
-  date String
+  showId Int
   seatNo Int
-  screen Screen @relation(fields: [screenId],references: [screenId])
-  @@unique([date,seatNo])
+  show Show @relation(fields: [showId],references: [showId])
+  @@unique([showId,seatNo])
 }
 
 

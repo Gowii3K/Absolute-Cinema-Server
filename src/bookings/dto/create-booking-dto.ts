@@ -3,10 +3,8 @@ import { IsDateString, IsInt, IsString } from "class-validator";
 export class CreateBookingDto{
   
 
-    @IsDateString()
-    date: string
     @IsInt()
-    screenId:number
+    showId:number
     @IsInt()
     seatNo:number
 
