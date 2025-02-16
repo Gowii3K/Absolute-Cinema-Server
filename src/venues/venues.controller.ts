@@ -10,22 +10,22 @@ export class VenuesController {
 
     @Post()
     createUser(@Body()payload: CreateVenueDto):Promise<Venue>{
-        return this.venuesService.createUser(payload);
+        return this.venuesService.createVenue(payload);
     }
 
     @Get()
     getAllUsers():Promise<Venue[]>{
-        return this.venuesService.getAllUsers();
+        return this.venuesService.getAllVenue();
     }
 
     @Delete(':id')
     deleteUser(@Param('id')id:string):Promise <Venue>{
-        return this.venuesService.deleteUser(parseInt(id,10));
+        return this.venuesService.deleteVenue(parseInt(id,10));
     }
 
     @Put(':id')
     updateUser(@Param('id') id:string ,@Body() payload:UpdateVenueDto):Promise<Venue>{
-        return this.venuesService.updateUser(parseInt(id,10),payload);
+        return this.venuesService.updateVenue(parseInt(id,10),payload);
     }
 
 

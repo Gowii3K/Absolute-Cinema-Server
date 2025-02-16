@@ -8,7 +8,7 @@ import { UpdateVenueDto } from './dto/update-venue.dto';
 export class VenuesService {
   constructor(private prismaService: PrismaService) {}
 
-  async createUser(payload: CreateVenueDto) {
+  async createVenue(payload: CreateVenueDto) {
     const salt= await bcrypt.genSalt();
     const password=await bcrypt.hash(payload.password,salt);
     payload.password=password;
@@ -17,17 +17,17 @@ export class VenuesService {
     });
   }
 
-  async getAllUsers() {
+  async getAllVenue() {
     return this.prismaService.venue.findMany();
   }
 
-  async deleteUser(id: number) {
+  async deleteVenue(id: number) {
     return this.prismaService.venue.delete({
       where: { venueId: id },
     });
   }
 
-  async findUserByEmail(email: string) {
+  async findVenueByEmail(email: string) {
     const user = await this.prismaService.venue.findFirst({
       where: { email: email },
     });
@@ -37,7 +37,7 @@ export class VenuesService {
     return user;
   }
 
-  async updateUser(id: number, payload: UpdateVenueDto) {
+  async updateVenue(id: number, payload: UpdateVenueDto) {
     return this.prismaService.venue.update({
       where: { venueId: id },
       data: payload,
