@@ -15,10 +15,13 @@ datasource db {
 
 model Venue{
   venueId Int @id @default(autoincrement())
-  name String
+  location String
+  username String
   email String @unique
   createdAt DateTime @default(now())
   password String
+  lat Float
+  lng Float
   screens Screen[]
 }
 

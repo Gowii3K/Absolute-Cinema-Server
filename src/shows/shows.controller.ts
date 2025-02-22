@@ -11,6 +11,11 @@ export class ShowsController {
         return this.showsService.getShows(parseInt(id,10),date);
     }
 
+    @Get(':date')
+    getShowsByDate(@Param('date')date:string){
+        return this.showsService.getShowsByDate(date);
+    }
+
     @Post()
     createShow(@Body() payload: CreateShowDto){
         return this.showsService.createShow(payload)

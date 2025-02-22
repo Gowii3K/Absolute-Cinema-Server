@@ -3,7 +3,10 @@ import { IsEmail, IsString } from "class-validator";
 export class CreateVenueDto{
 
     @IsString()
-    name:string;
+    username:string;
+
+    @IsString()
+    location:string;
 
     @IsEmail()
     email: string;

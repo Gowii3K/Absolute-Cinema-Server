@@ -1,6 +1,7 @@
 export interface Venue{
     venueId:number;
-    name:string;
+    username:string;
+    location:string;
     email: string;
     createdAt:Date;
 

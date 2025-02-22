@@ -9,10 +9,6 @@ export class JwtStrategy extends PassportStrategy(Strategy){
         if(!secret){
             throw new Error();
         }
-        console.log(secret);
-        console.log('JWT Strategy Secret:', secret);
-        console.log('JWT Strategy Secret length:', secret.length);
-        console.log('JWT Strategy Secret type:', typeof secret);
         super({
             jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration:false,

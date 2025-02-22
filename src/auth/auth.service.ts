@@ -16,12 +16,11 @@ export class AuthService {
     const authorized = await bcrypt.compare(password, venue.password);
     if (!authorized) {
       throw new UnauthorizedException('Wrong password');
-    }
-     else return venue;
+    } else return venue;
   }
 
   async login(venue: Venue) {
-    const payload = { name: venue.name, sub: venue.venueId };
+    const payload = { name: venue.location, sub: venue.venueId };
 
     return {
       access_token: this.jwtService.sign(payload),

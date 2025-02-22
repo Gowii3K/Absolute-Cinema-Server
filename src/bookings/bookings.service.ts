@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking-dto';
 import { Slot } from './interface/slots';
+import { CreateBookingsDto } from './dto/create-bookings-dto';
 
 @Injectable()
 export class BookingsService {
@@ -11,12 +12,12 @@ export class BookingsService {
     //find opening and closing time of screen
     const time = await this.prismaService.show.findFirst({
       where: { showId: id },
-      include:{screen:true}
+      include: { screen: true },
     });
 
     //find existing books for the date
     const booked = await this.prismaService.booking.findMany({
-      where: { showId: id},
+      where: { showId: id },
       select: { seatNo: true },
     });
 
@@ -32,14 +33,27 @@ export class BookingsService {
           isBooked: bookedArr.has(i),
         });
       }
-    
+
       return slotsArray;
     }
-
   }
   async createBooking(payload: CreateBookingDto) {
     return this.prismaService.booking.create({
       data: payload,
     });
+  }
+  async createBookings(payload: CreateBookingsDto) {
+    console.log(payload);
+    await Promise.all(
+      payload.seatNo.map((seat) =>
+        this.prismaService.booking.create({
+          data: {
+            ...payload,
+            seatNo: seat,
+          },
+        }),
+      ),
+    );
+    return 'done';
   }
 }
