@@ -12,8 +12,7 @@ export class ScreensService {
       where: { venueId: id },
     });
   }
-  async createScreen( payload: CreateScreenDto) {
-    
+  async createScreen(payload: CreateScreenDto) {
     return await this.prismaService.screen.create({
       data: payload,
     });
@@ -21,8 +20,14 @@ export class ScreensService {
 
   async updateScreen(screenId: number, payload: UpdateScreenDto) {
     return await this.prismaService.screen.update({
-      where: {screenId:screenId},
+      where: { screenId: screenId },
       data: payload,
+    });
+  }
+
+  async deleteScreen(screenId: number) {
+    return await this.prismaService.screen.delete({
+      where: { screenId: screenId },
     });
   }
 }

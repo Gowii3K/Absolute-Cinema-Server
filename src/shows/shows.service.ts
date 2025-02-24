@@ -22,4 +22,10 @@ export class ShowsService {
       where: { date: date },
     });
   }
+
+  async deleteShow(showId){
+    return this.prismaService.show.delete({
+      where:{showId:showId}
+    })
+  }
 }

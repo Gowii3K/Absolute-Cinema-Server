@@ -7,13 +7,15 @@ import { VenuesModule } from 'src/venues/venues.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersService } from 'src/users/users.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-
   //read up more on the config part
   imports: [
     VenuesModule,
     PassportModule,
+    UsersModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

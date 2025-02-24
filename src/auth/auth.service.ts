@@ -3,20 +3,28 @@ import * as bcrypt from 'bcrypt';
 import { VenuesService } from 'src/venues/venues.service';
 import { JwtService } from '@nestjs/jwt';
 import { Venue } from 'src/venues/interface/venue';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private venuesService: VenuesService,
     private jwtService: JwtService,
+    private usersService: UsersService,
   ) {}
 
-  async validateLogin(email: string, password: string) {
-    const venue = await this.venuesService.findVenueByEmail(email);
-    const authorized = await bcrypt.compare(password, venue.password);
+  async validateLogin(email: string, password: string, type: string) {
+    let details;
+    if (type === 'user') {
+      details = await this.usersService.getUserByEmail(email);
+    } else if (type === 'venue') {
+      details = await this.venuesService.findVenueByEmail(email);
+    }
+
+    const authorized = await bcrypt.compare(password, details.password);
     if (!authorized) {
       throw new UnauthorizedException('Wrong password');
-    } else return venue;
+    } else return details;
   }
 
   async login(venue: Venue) {

@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User{
+  userId Int @id @default(autoincrement())
+  email String @unique
+  username String @unique
+  password String
+  bookings Booking []
+}
+
 model Venue{
   venueId Int @id @default(autoincrement())
   location String
@@ -30,7 +38,7 @@ model Screen{
   venueId Int
   seats Int 
   show Show[]
-  venue Venue @relation(fields: [venueId],references: [venueId])
+  venue Venue @relation(fields: [venueId],references: [venueId], onDelete: Cascade)
 }
 
 model Show{
@@ -40,7 +48,7 @@ model Show{
   date String
   time String
   bookings Booking[]
-  screen Screen @relation(fields: [screenId],references: [screenId])
+  screen Screen @relation(fields: [screenId],references: [screenId],onDelete: Cascade)
   @@unique([date,time,screenId])
 
   
@@ -49,7 +57,9 @@ model Booking{
   bookingId Int @id @default(autoincrement())
   showId Int
   seatNo Int
-  show Show @relation(fields: [showId],references: [showId])
+  userId Int?
+  user User? @relation(fields: [userId],references: [userId])
+  show Show @relation(fields: [showId],references: [showId],onDelete: Cascade)
   @@unique([showId,seatNo])
 }
 
