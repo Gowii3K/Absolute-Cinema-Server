@@ -4,6 +4,7 @@ import { VenuesService } from 'src/venues/venues.service';
 import { JwtService } from '@nestjs/jwt';
 import { Venue } from 'src/venues/interface/venue';
 import { UsersService } from 'src/users/users.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +28,24 @@ export class AuthService {
     } else return details;
   }
 
-  async login(venue: Venue) {
-    const payload = { name: venue.location, sub: venue.venueId };
+  async login(entity: Venue | User) {
+    let payload;
+    if("userId" in entity){
+      payload={
+        name:entity.username,
+        sub:entity.userId
+      }
+    }
+    else {
+      payload={
+        name:entity.username,
+        sub:entity.venueId
+      }
+    }
+      
+
+    
+    
 
     return {
       access_token: this.jwtService.sign(payload),

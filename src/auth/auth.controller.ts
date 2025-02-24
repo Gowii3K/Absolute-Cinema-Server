@@ -12,13 +12,12 @@ export class AuthController {
   @Post('login')
   login(@Request() req) {
     console.log(req.user);
-    return this.authService.login(req.user)
+    return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getHello(@Request() req){
-    return"sdsdsd";
-    
+  getHello(@Request() req) {
+    return 'sdsdsd';
   }
 }

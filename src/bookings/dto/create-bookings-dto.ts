@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsInt, IsString } from "class-validator";
+import { IsArray, IsDateString, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateBookingsDto{
   
@@ -7,5 +7,8 @@ export class CreateBookingsDto{
     showId:number
     @IsArray()
     seatNo:number[]
+    @IsInt()
+    @IsOptional()
+    userId:number
 
 }
