@@ -23,13 +23,13 @@ model User{
 
 model Venue{
   venueId Int @id @default(autoincrement())
-  location String
+  location String?
   username String
   email String @unique
   createdAt DateTime @default(now())
   password String
-  lat Float
-  lng Float
+  lat Float?
+  lng Float?
   screens Screen[]
 }
 

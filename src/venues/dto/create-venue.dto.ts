@@ -5,8 +5,6 @@ export class CreateVenueDto{
     @IsString()
     username:string;
 
-    @IsString()
-    location:string;
 
     @IsEmail()
     email: string;
