@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
+import { GoogleStrategy } from './google.strategy';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   //read up more on the config part
@@ -25,7 +27,7 @@ import { UsersModule } from 'src/users/users.module';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy,GoogleStrategy,PrismaService],
   controllers: [AuthController],
   exports: [AuthService],
 })

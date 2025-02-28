@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Venue } from 'src/venues/interface/venue';
 import { UsersService } from 'src/users/users.service';
 import { User } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private venuesService: VenuesService,
     private jwtService: JwtService,
     private usersService: UsersService,
+    private prismaService: PrismaService,
   ) {}
 
   async validateLogin(email: string, password: string, type: string) {
@@ -29,26 +31,45 @@ export class AuthService {
   }
 
   async login(entity: Venue | User) {
+    console.log(entity);
     let payload;
-    if("userId" in entity){
-      payload={
-        name:entity.username,
-        sub:entity.userId
-      }
+    if ('userId' in entity) {
+      console.log('its herer');
+      payload = {
+        name: entity.username,
+        sub: entity.userId,
+      };
+    } else {
+      payload = {
+        name: entity.username,
+        sub: entity.venueId,
+      };
     }
-    else {
-      payload={
-        name:entity.username,
-        sub:entity.venueId
-      }
-    }
-      
-
-    
-    
+    console.log('coming here');
+    console.log(payload);
 
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async googleLogin(req) {
+    console.log(req);
+    if (!req.user) {
+      return 'No user from google';
+    }
+    let user = await this.prismaService.user.findUnique({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      console.log('user does not exist');
+      user = await this.prismaService.user.create({
+        data: { username: req.user.email, email: req.user.email, password: '' },
+      });
+    }
+    const token=await this.login(user);
+    console.log(token);
+    return token;
   }
 }
