@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Request, Res, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './dto/local-auth.guard';
@@ -20,10 +20,18 @@ export class AuthController {
   @Get()
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
+
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const response = await this.authService.googleLogin(req);
+    if (typeof response === 'string') {
+      // Handle the case where no user is found
+      return { url: `http://your-frontend-url.com/login?error=no_user` };
+    }
+    return res.redirect(
+      `http://localhost:5173/user-home-page?token=${response.access_token}`,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

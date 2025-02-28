@@ -40,6 +40,7 @@ export class AuthService {
         sub: entity.userId,
       };
     } else {
+      console.log("its in venue");
       payload = {
         name: entity.username,
         sub: entity.venueId,
@@ -68,7 +69,7 @@ export class AuthService {
         data: { username: req.user.email, email: req.user.email, password: '' },
       });
     }
-    const token=await this.login(user);
+    const token = await this.login(user);
     console.log(token);
     return token;
   }
