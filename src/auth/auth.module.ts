@@ -9,7 +9,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
-import { GoogleStrategy } from './google.strategy';
+import { GoogleStrategy, GoogleStrategyVenue } from './google.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
@@ -27,7 +27,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy,GoogleStrategy,PrismaService],
+  providers: [AuthService, LocalStrategy, JwtStrategy,GoogleStrategy,PrismaService,GoogleStrategyVenue],
   controllers: [AuthController],
   exports: [AuthService],
 })

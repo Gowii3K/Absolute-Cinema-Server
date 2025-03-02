@@ -55,7 +55,6 @@ export class AuthService {
   }
 
   async googleLogin(req) {
-    console.log(req);
     if (!req.user) {
       return 'No user from google';
     }
@@ -70,6 +69,24 @@ export class AuthService {
       });
     }
     const token = await this.login(user);
+    console.log(token);
+    return token;
+  }
+  async googleLoginVenue(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+    let venue = await this.prismaService.venue.findUnique({
+      where: { email: req.user.email },
+    });
+
+    if (!venue) {
+      console.log('user does not exist');
+      venue = await this.prismaService.venue.create({
+        data: { username: req.user.email, email: req.user.email, password: '' },
+      });
+    }
+    const token = await this.login(venue);
     console.log(token);
     return token;
   }
