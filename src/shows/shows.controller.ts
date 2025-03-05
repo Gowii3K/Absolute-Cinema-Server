@@ -1,6 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Request,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ShowsService } from './shows.service';
 import { CreateShowDto } from './dto/create-show.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('shows')
 export class ShowsController {
@@ -25,4 +36,17 @@ export class ShowsController {
   deleteShow(@Param('showId') showId: string) {
     return this.showsService.deleteShow(parseInt(showId, 10));
   }
+
+  @UseInterceptors(FileInterceptor('file'))
+  @Post(':id/upload-file')
+  async addImageToShow(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: string,
+    @Request() req,
+  ) {
+    console.log(file);
+    await this.showsService.addImageToShow(file,parseInt(id,10));
+  }
+
+
 }

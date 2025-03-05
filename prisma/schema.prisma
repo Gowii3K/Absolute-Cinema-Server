@@ -47,11 +47,12 @@ model Show{
   screenId Int
   date String
   time String
+  name String
+  imageUrl String?
   bookings Booking[]
   screen Screen @relation(fields: [screenId],references: [screenId],onDelete: Cascade)
   @@unique([date,time,screenId])
 
-  
 }
 model Booking{
   bookingId Int @id @default(autoincrement())

@@ -9,5 +9,8 @@ export class CreateShowDto{
     @IsString()
     time:string
 
+    @IsString()
+    name:string
+
 
 }
